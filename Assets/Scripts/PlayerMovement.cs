@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, body.velocity.y);
 
         if (Input.GetKey(KeyCode.W))
-            body.velocity = new Vector2(body.velocity.x, speed); //Ahoj
+            body.velocity = new Vector2(body.velocity.x, speed); //Ahoj2
     }
 }
 
