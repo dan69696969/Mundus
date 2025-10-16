@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/PortalScene.unity
+    guid: 1902d90f167905e449d405ae6f028ff6
+  - enabled: 1
+    path: Assets/Scenes/Wind.unity
+    guid: b8e4533eb2dfb8345827a23bf8f695f5
+  - enabled: 1
+    path: Assets/Scenes/Earth.unity
+    guid: d05e09fd9f7ae4a49b88b64a5308ed0e
+  - enabled: 1
     path: Assets/Scenes/Fire.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Water.unity
+    guid: 73184738267fa884eb133e5429eaaf91
+  - enabled: 1
+    path: Assets/Scenes/FnalBossScene.unity
+    guid: 90c1dc1baa01b3143acd80c3dd743de3
   m_configObjects: {}
