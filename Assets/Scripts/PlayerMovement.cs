@@ -57,8 +57,6 @@ public class PlayerMovement : MonoBehaviour
         // Wall jump logic
         if (wallJumpCooldown > 0.2f)
         {
-
-
             body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
 
             if (onWall() && !isGrounded())
