@@ -1,56 +1,113 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Pre sledovanie naËÌtania scÈny
+using System.Linq; // Pre pouûitie .Where(), .Select() a .ToArray()
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private float attackCooldown;
+    [SerializeField] private float attackCooldown = 0.5f; // Predvolen· hodnota, ak nie je nastaven·
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject[] fireballs;
     private Animator anim;
-    private PlayerMovement playerMovement;
+    // PlayerMovement sa uû nepouûÌva na kontrolu ˙toku
     private float cooldownTimer = Mathf.Infinity;
 
-    [SerializeField] Projectile projectilePrefab;
+    // [SerializeField] Projectile projectilePrefab; // ZakomentovanÈ, lebo pouûÌvate object pooling
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        playerMovement = GetComponent<PlayerMovement>();
+
+        // Registr·cia udalosti pre automatickÈ priradenie fireballov pri zmene scÈny
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // OkamûitÈ priradenie pri ötarte, ak PlayerAttack preûÌva cez scÈny (DontDestroyOnLoad)
+        AssignFireballs();
+    }
+
+    private void OnDestroy()
+    {
+        // Odhl·senie z udalosti
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Vol·me metÛdu na priradenie fireballov po naËÌtanÌ scÈny
+        AssignFireballs();
+    }
+
+    private void AssignFireballs()
+    {
+        // N·jdeme FireballHolder v scÈne
+        GameObject fireballHolder = GameObject.Find("FireballHolder");
+
+        if (fireballHolder != null)
+        {
+            // ZÌskame VäETKY Transform potomkov, vr·tane neaktÌvnych (true)
+            // Filtrujeme rodiËa, vyberieme GameObject a prekonvertujeme na pole
+            fireballs = fireballHolder.GetComponentsInChildren<Transform>(true)
+                .Where(t => t.gameObject != fireballHolder)
+                .Select(t => t.gameObject)
+                .ToArray();
+
+            Debug.Log($"[PlayerAttack] ⁄speöne priraden˝ch {fireballs.Length} fireballov zo scÈny.");
+        }
+        else
+        {
+            fireballs = new GameObject[0];
+            Debug.LogWarning("[PlayerAttack] Objekt 'FireballHolder' sa nenaöiel v aktu·lnej scÈne. ⁄tok nebude fungovaù.");
+        }
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown && playerMovement.canAttack())
+        // ⁄tok je povolen˝, ak drûÌme æavÈ tlaËidlo myöi a cooldown vypröal
+        if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown)
             Attack();
 
         cooldownTimer += Time.deltaTime;
     }
+
     private void Attack()
     {
         anim.SetTrigger("attack");
         cooldownTimer = 0;
 
-        fireballs[FindFireball()].transform.position = firePoint.position;
-        //Debug.Log("Player attack");
-        fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x)); //negr
+        if (fireballs == null || fireballs.Length == 0)
+        {
+            Debug.LogWarning("Fireballs nie s˙ priradenÈ, ˙tok nemÙûe prebehn˙ù.");
+            return;
+        }
 
-        // Instanicate
-        /*Projectile p = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        p.transform.parent = null; // very important
-        
-        float horizontalDirection = Mathf.Sign(transform.localScale.x);
-        p.SetDirection(horizontalDirection);
-        Vector2 directionVector = new Vector2(horizontalDirection, 0);
-        p.GetComponent<Rigidbody2D>().AddForce(directionVector * 10, ForceMode2D.Impulse);*/
+        int fireballIndex = FindFireball();
+
+        // Ak sa pool vyËerp· (vr·ti 0), a ten objekt je st·le aktÌvny, prepÌöeme ho
+        if (fireballs[fireballIndex] != null)
+        {
+            GameObject fireball = fireballs[fireballIndex];
+
+            // 1. NastavÌme pozÌciu
+            fireball.transform.position = firePoint.position;
+
+            // 2. NastavÌme smer strely
+            // Mathf.Sign(transform.localScale.x) vr·ti 1 pre smer doprava a -1 pre smer doæava
+            fireball.GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
+        }
     }
+
     private int FindFireball()
     {
+        if (fireballs == null || fireballs.Length == 0) return 0;
+
+        // Prejdeme pool a n·jdeme neaktÌvny objekt
         for (int i = 0; i < fireballs.Length; i++)
         {
-            if (!fireballs[i].activeInHierarchy)
+            if (fireballs[i] != null && !fireballs[i].activeInHierarchy)
                 return i;
         }
+        // Ak s˙ vöetky aktÌvne, vr·time index 0 (najstaröÌ fireball bude prepÌsan˝/vr·ten˝)
         return 0;
     }
 }

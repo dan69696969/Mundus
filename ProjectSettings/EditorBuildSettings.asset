@@ -21,6 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Water.unity
     guid: 73184738267fa884eb133e5429eaaf91
   - enabled: 1
-    path: Assets/Scenes/FnalBossScene.unity
+    path: Assets/Scenes/BossScene.unity
     guid: 90c1dc1baa01b3143acd80c3dd743de3
   m_configObjects: {}
