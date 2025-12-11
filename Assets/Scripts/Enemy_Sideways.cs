@@ -11,6 +11,9 @@ public class Enemy_Sideways : MonoBehaviour
     private float leftEdge;
     private float rightEdge;
 
+    private float nextDamageTime;
+    private float damageRate = 1;
+
     private void Awake()
     {
         leftEdge = transform.position.x - movementDistance;
@@ -37,11 +40,26 @@ public class Enemy_Sideways : MonoBehaviour
                 movingLeft = true;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTrigger2D(Collider2D collision)
     {
         if(collision.tag == "Player")
         {
             collision.GetComponent<Health>().TakeDamage(damage);
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            if (Time.time >= nextDamageTime)
+            {
+                // Udìlení poškození
+                collision.GetComponent<Health>().TakeDamage(damage);
+
+                // Nastavení èasu pro další možné poškození
+                // 1 / damageRate je interval v sekundách mezi poškozeními
+                nextDamageTime = Time.time + (0.2f / damageRate);
+            }
         }
     }
 }

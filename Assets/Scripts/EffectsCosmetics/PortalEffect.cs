@@ -14,6 +14,7 @@ public class PortalEffect : MonoBehaviour
     public float scaleSpeed = 2f;
 
     // Uložíme si pùvodní velikost portálu
+    // Uložíme si pùvodní prdel
     private Vector3 initialScale;
 
     // Start is called before the first frame update
@@ -37,6 +38,7 @@ public class PortalEffect : MonoBehaviour
         float scaleFactor = 1.0f + Mathf.Sin(Time.time * scaleSpeed) * scaleAmount;
 
         // Aplikujeme vypoèítanou zmìnu na pùvodní velikost objektu
+        // Proè tady je tolik poznamek dopici
         transform.localScale = initialScale * scaleFactor;
     }
 }
