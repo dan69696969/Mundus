@@ -1,14 +1,18 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 public class PortalController : MonoBehaviour
 {
     public string sceneNameToLoad;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(sceneNameToLoad);
+            if (!string.IsNullOrEmpty(sceneNameToLoad))
+            {
+                SceneManager.LoadScene(sceneNameToLoad);
+            }
         }
     }
 }

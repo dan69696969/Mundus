@@ -1,26 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy_Sideways : MonoBehaviour
 {
     [SerializeField] private float movementDistance;
     [SerializeField] private float speed;
-    [SerializeField] private float damage;
+
+    [Header("Útok")]
+    [SerializeField] private float damage; // Pøevezme pøesnì hodnotu z Inspectoru
+    [SerializeField] private float damageRate = 1f; // Jak èasto dává damage (vteøiny)
+
     private bool movingLeft;
     private float leftEdge;
     private float rightEdge;
-
     private float nextDamageTime;
-    private float damageRate = 1;
 
     private void Awake()
     {
         leftEdge = transform.position.x - movementDistance;
         rightEdge = transform.position.x + movementDistance;
     }
+
     private void Update()
     {
+        // Pohyb nepøítele
         if (movingLeft)
         {
             if (transform.position.x > leftEdge)
@@ -40,25 +42,31 @@ public class Enemy_Sideways : MonoBehaviour
                 movingLeft = true;
         }
     }
-    private void OnTrigger2D(Collider2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Health>().TakeDamage(damage);
+            if (collision.GetComponent<Health>() != null)
+            {
+                // Ubere pøesnì tolik, kolik je v promìnné damage
+                collision.GetComponent<Health>().TakeDamage(damage);
+            }
         }
     }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             if (Time.time >= nextDamageTime)
             {
-                // Udìlení poškození
-                collision.GetComponent<Health>().TakeDamage(damage);
-
-                // Nastavení èasu pro další možné poškození
-                // 1 / damageRate je interval v sekundách mezi poškozeními
-                nextDamageTime = Time.time + (0.2f / damageRate);
+                Health playerHealth = collision.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    nextDamageTime = Time.time + (1f / damageRate);
+                }
             }
         }
     }

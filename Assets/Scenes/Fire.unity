@@ -2054,7 +2054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2b4e88236265c44af7e90f8492adc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: {fileID: 2001728755}
   totalhealthBar: {fileID: 1258149656}
   currenthealthBar: {fileID: 1175748325}
 --- !u!1 &223077082
@@ -15874,7 +15873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70e2338847c43f84486025a7086a5e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 2
+  startingHealth: 1
   respawnPoint: {fileID: 48169378}
 --- !u!1 &2018664033
 GameObject:

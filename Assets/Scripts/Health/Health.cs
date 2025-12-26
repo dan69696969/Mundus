@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float startingHealth;
+    [Header("Nastavení")]
+    // ZDE V UNITY NAPIŠ POÈET ŽIVOTÙ (napø. 3 nebo 5)
+    // Pokud je tu 0, hráè hned umøe. Zkontroluj to v Inspectoru!
+    public float startingHealth;
+
     public float currentHealth { get; private set; }
     private Animator anim;
     private bool dead;
+
     public Transform respawnPoint;
 
     private void Awake()
@@ -21,7 +26,6 @@ public class Health : MonoBehaviour
         if (currentHealth > 0)
         {
             anim.SetTrigger("hurt");
-            //iframes
         }
         else
         {
@@ -35,25 +39,26 @@ public class Health : MonoBehaviour
         dead = true;
         anim.SetTrigger("die");
 
-        GetComponent<PlayerMovement>().enabled = false;
+        // Vypnutí pohybu pøi smrti
+        if (GetComponent<PlayerMovement>() != null)
+            GetComponent<PlayerMovement>().enabled = false;
     }
 
     public void Respawn()
     {
         currentHealth = startingHealth;
-
-        GetComponent<PlayerMovement>().enabled = true;
-
         dead = false;
 
         anim.ResetTrigger("die");
         anim.ResetTrigger("hurt");
-
-        transform.position = respawnPoint.position;
-
         anim.Play("Idle", 0, 0f);
-    }
 
+        if (GetComponent<PlayerMovement>() != null)
+            GetComponent<PlayerMovement>().enabled = true;
+
+        if (respawnPoint != null)
+            transform.position = respawnPoint.position;
+    }
 
     public void AddHealth(float _value)
     {
