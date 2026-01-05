@@ -2528,8 +2528,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneNameToLoad: BossScene
-  objectToDestroyName: WaterPortal, EarthPortal, Fireportal, WindPortal
-  requiredObjectsToDestroy: []
+  objectToDestroyName: WaterPortal, EarthPortal, FirePortal, WindPortal
+  requiredObjectsToDestroy:
+  - WaterPortal
+  - EarthPortal
+  - FirePortal
+  - WindPortal
   bossPortal: {fileID: 1668873976}
 --- !u!58 &1668873981
 CircleCollider2D:
