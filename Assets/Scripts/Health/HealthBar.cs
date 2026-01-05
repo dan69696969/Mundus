@@ -20,7 +20,7 @@ public class HealthBar : MonoBehaviour
             float maxHealth = playerHealth.startingHealth;
 
             // Jediná pojistka proti pádu hry (dìlení nulou), pokud bys zapomnìl nastavit životy úplnì
-            if (maxHealth <= 0) maxHealth = 1f;
+            if (maxHealth <= 0) maxHealth = 3f;
 
             currenthealthBar.fillAmount = playerHealth.currentHealth / maxHealth;
         }
