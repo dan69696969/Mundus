@@ -214,8 +214,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151138436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 57.9975, y: -15.1797, z: 0}
-  m_LocalScale: {x: 16.328, y: 13.363, z: 10}
+  m_LocalPosition: {x: 42, y: -47.8, z: 0}
+  m_LocalScale: {x: 14.180867, y: 10.173252, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -577,6 +577,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneNameToLoad: PortalScene
   objectToDestroyName: WaterPortal
+  requiredObjectsToDestroy: []
+  bossPortal: {fileID: 0}
 --- !u!58 &842964723
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -667,7 +669,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 842964721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.1, y: -38.1, z: 0}
+  m_LocalPosition: {x: 2.8, y: -41.7, z: 0}
   m_LocalScale: {x: 0.19775, y: 0.201, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
