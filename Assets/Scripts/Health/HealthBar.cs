@@ -1,6 +1,7 @@
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
+[ExecuteAlways] // TENTO ØÁDEK zajistí, že se UI mìní i bez zapnutí hry
 public class HealthBar : MonoBehaviour
 {
     private Health playerHealth;
@@ -10,19 +11,26 @@ public class HealthBar : MonoBehaviour
     private void Start()
     {
         playerHealth = FindObjectOfType<Health>();
+        UpdateVisualScale();
     }
 
     private void Update()
     {
-        if (playerHealth != null)
+        if (playerHealth != null && currenthealthBar != null)
         {
-            // Pøeèteme si, kolik jsi nastavil v Health skriptu
-            float maxHealth = playerHealth.startingHealth;
+            // Pokud jsi u hráèe nastavil napø. 3 srdce, fillAmount bude 0.3
+            currenthealthBar.fillAmount = playerHealth.currentHealth / 10f;
 
-            // Jediná pojistka proti pádu hry (dìlení nulou), pokud bys zapomnìl nastavit životy úplnì
-            if (maxHealth <= 0) maxHealth = 3f;
+            // Zároveò hlídáme, aby i pozadí (šedá srdce) odpovídalo nastavení
+            if (!Application.isPlaying) UpdateVisualScale();
+        }
+    }
 
-            currenthealthBar.fillAmount = playerHealth.currentHealth / maxHealth;
+    public void UpdateVisualScale()
+    {
+        if (playerHealth != null && totalhealthBar != null)
+        {
+            totalhealthBar.fillAmount = playerHealth.startingHealth / 10f;
         }
     }
 }

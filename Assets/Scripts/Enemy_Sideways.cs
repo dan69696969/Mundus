@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class Enemy_Sideways : MonoBehaviour
 {
+    [Header("Nastavení pohybu")]
     [SerializeField] private float movementDistance;
     [SerializeField] private float speed;
 
-    [Header("Útok")]
-    [SerializeField] private float damage; // Pøevezme pøesnì hodnotu z Inspectoru
-    [SerializeField] private float damageRate = 1f; // Jak èasto dává damage (vteøiny)
+    [Header("Nastavení poškození (Pila)")]
+    [SerializeField] private float damage; // Kolik ubere jedno "kousnutí" (napø. 1)
+    [SerializeField] private float damageInterval = 0.5f; // Jak èasto pila ubírá život
 
     private bool movingLeft;
     private float leftEdge;
     private float rightEdge;
-    private float nextDamageTime;
+    private float nextDamageTime; // Pomocná promìnná pro èasování
 
     private void Awake()
     {
@@ -22,52 +23,53 @@ public class Enemy_Sideways : MonoBehaviour
 
     private void Update()
     {
-        // Pohyb nepøítele
+        // Klasický pohyb pily tam a zpìt
         if (movingLeft)
         {
             if (transform.position.x > leftEdge)
-            {
                 transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y, transform.position.z);
-            }
             else
                 movingLeft = false;
         }
         else
         {
             if (transform.position.x < rightEdge)
-            {
                 transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y, transform.position.z);
-            }
             else
                 movingLeft = true;
         }
     }
 
+    // Když hráè do pily vejde
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            if (collision.GetComponent<Health>() != null)
-            {
-                // Ubere pøesnì tolik, kolik je v promìnné damage
-                collision.GetComponent<Health>().TakeDamage(damage);
-            }
+            DealDamage(collision);
         }
     }
 
+    // Když hráè v pile zùstane (klíèové pro pilu!)
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            // Pokud už uplynul nastavený interval, ublížíme znovu
             if (Time.time >= nextDamageTime)
             {
-                Health playerHealth = collision.GetComponent<Health>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(damage);
-                    nextDamageTime = Time.time + (1f / damageRate);
-                }
+                DealDamage(collision);
             }
+        }
+    }
+
+    private void DealDamage(Collider2D collision)
+    {
+        Health playerHealth = collision.GetComponent<Health>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(damage);
+            // Nastavíme èas, kdy mùže pila ublížit pøíštì
+            nextDamageTime = Time.time + damageInterval;
         }
     }
 }

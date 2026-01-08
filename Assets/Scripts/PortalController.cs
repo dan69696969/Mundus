@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class PortalController : MonoBehaviour
 {
     [Header("Teleportace")]
-    public string sceneNameToLoad;
+    public string sceneNameToLoad; 
 
     [Header("Co se má smazat pøi vstupu")]
     [Tooltip("Mùžeš psát více jmen oddìlených èárkou, napø: Portál1, Portál2")]
@@ -85,7 +85,7 @@ public class PortalController : MonoBehaviour
 
         // Zapne/vypne collider podle toho, jestli je splnìno
         portalCollider.enabled = allDestroyed;
-
+        
         SpriteRenderer sr = bossPortal.GetComponent<SpriteRenderer>();
         if (sr != null) sr.color = allDestroyed ? Color.white : new Color(1, 1, 1, 0.3f);
 
