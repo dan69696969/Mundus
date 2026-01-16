@@ -8,10 +8,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
 
-    [Header("Infinite Jump Setup")]
+    [Header("Scene Names")]
+    private const string WIND_SCENE_NAME = "Wind";
+    private const string WATER_SCENE_NAME = "Water";
+    private const string TUTORIAL_SCENE_NAME = "Tutorial";
+    private const string EARTH_SCENE_NAME = "Earth";
+
+    [Header("Gravity Settings")]
+    [SerializeField] private float normalGravity = 7f;
+    [SerializeField] private float waterGravity = 1.5f;
+
     private int maxJumps = 1;
     private int availableJumps;
-    private const string WIND_SCENE_NAME = "Wind";
 
     private Rigidbody2D body;
     private Animator anim;
@@ -24,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -42,12 +49,14 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("run", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
 
-        bool isInWindScene = SceneManager.GetActiveScene().name == WIND_SCENE_NAME;
+        string sceneName = SceneManager.GetActiveScene().name;
+        bool isInWindScene = sceneName == WIND_SCENE_NAME;
+        bool isInWaterScene = sceneName == WATER_SCENE_NAME;
+        bool isInTutorialScene = sceneName == TUTORIAL_SCENE_NAME;
+        bool isInEarthScene = sceneName == EARTH_SCENE_NAME;
 
         if (isGrounded())
-        {
             availableJumps = maxJumps;
-        }
 
         if (wallJumpCooldown > 0.2f)
         {
@@ -59,10 +68,40 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = Vector2.zero;
             }
             else
-                body.gravityScale = 7;
+            {
+                body.gravityScale = isInWaterScene ? waterGravity : normalGravity;
+            }
 
-            if (Input.GetKey(KeyCode.Space))
-                Jump(isInWindScene);
+            bool isHoldingJump = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W);
+            bool isPressingJump = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W);
+
+            // 1. Ve WIND scéně (Nekonečné lítání na DRŽENÍ)
+            if (isInWindScene && isHoldingJump)
+            {
+                Jump(true);
+            }
+            // 2. V TUTORIALU (Lezení ODRAZY na DRŽENÍ + Nekonečný skok na KLIKNUTÍ)
+            else if (isInTutorialScene)
+            {
+                if (onWall() && !isGrounded() && isHoldingJump) Jump(false);
+                if (isPressingJump) Jump(true);
+            }
+            // 3. V EARTH (Jen lezení ODRAZY na DRŽENÍ, ale skok ve vzduchu je NORMÁLNÍ)
+            else if (isInEarthScene)
+            {
+                // Lezení odrazy při držení
+                if (onWall() && !isGrounded() && isHoldingJump)
+                    Jump(false);
+
+                // Klasický skok (nebude nekonečný)
+                else if (isPressingJump)
+                    Jump(false);
+            }
+            // 4. OSTATNÍ SVĚTY
+            else if (isPressingJump)
+            {
+                Jump(false);
+            }
         }
         else
             wallJumpCooldown += Time.deltaTime;
@@ -96,20 +135,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private bool isGrounded()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
-        return raycastHit.collider != null;
-    }
+    private bool isGrounded() => Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, groundLayer).collider != null;
+    private bool onWall() => Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer).collider != null;
 
-    private bool onWall()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
-        return raycastHit.collider != null;
-    }
-
-    public bool canAttack()
-    {
-        return horizontalInput == 0 && isGrounded() && !onWall();
-    }
+    public bool canAttack() => horizontalInput == 0 && isGrounded() && !onWall();
 }

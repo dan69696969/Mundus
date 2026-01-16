@@ -48,7 +48,13 @@ public class Enemy_Sideways : MonoBehaviour
             DealDamage(collision);
         }
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            DealDamage(collision.collider);
+        }
+    }
     // Když hráè v pile zùstane (klíèové pro pilu!)
     private void OnTriggerStay2D(Collider2D collision)
     {
