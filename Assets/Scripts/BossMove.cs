@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -12,19 +13,26 @@ public class BossMove : MonoBehaviour
     [SerializeField] private int maxHealth = 5;
 
     [Header("Nastavení Otáčení")]
-    [SerializeField] private float flipThreshold = 0.5f; // Nové: Jak daleko musí být hráč, aby se boss otočil
+    [SerializeField] private float flipThreshold = 0.5f;
 
     [Header("Odkazy")]
     [SerializeField] private Transform player;
     [SerializeField] private GameObject finalPortal;
 
+    // TADY JE TO DŮLEŽITÉ:
+    // Vytvoříme prázdné políčko v Inspektoru.
+    // Funguje to, i když je ten objekt ve hře vypnutý.
+    [Header("Objekt k aktivaci")]
+    [SerializeField] private GameObject objektPoSmrti;
+
     private Rigidbody2D rb;
     private Animator anim;
-
     private bool isDead = false;
     private float lastAttackTime;
     private int currentHealth;
     private bool isFacingRight = true;
+
+    [SerializeField] Image Hpbar;
 
     void Start()
     {
@@ -32,7 +40,8 @@ public class BossMove : MonoBehaviour
         anim = GetComponent<Animator>();
         currentHealth = maxHealth;
 
-        // Pojistka: Zmrazí rotaci, aby se boss nekutálel
+        if (Hpbar != null) Hpbar.fillAmount = (float)currentHealth / maxHealth;
+
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         if (player == null)
@@ -46,11 +55,9 @@ public class BossMove : MonoBehaviour
 
     void Update()
     {
-        // Pokud je mrtvý, nic nedělej.
         if (isDead || player == null) return;
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
         HandleFlip();
 
         if (distanceToPlayer > attackRange)
@@ -69,23 +76,11 @@ public class BossMove : MonoBehaviour
 
     private void HandleFlip()
     {
-        // --- OPRAVA SEKÁNÍ ---
-        // Zjistíme rozdíl v X souřadnicích (vzdálenost vlevo/vpravo)
         float xDifference = player.position.x - transform.position.x;
-
-        // Pokud je hráč moc blízko středu (v rozmezí -0.5 až 0.5), neotáčíme se.
-        // Tím zabráníme blikání ze strany na stranu.
         if (Mathf.Abs(xDifference) < flipThreshold) return;
 
-        // Samotné otáčení
-        if (xDifference < 0 && isFacingRight)
-        {
-            Flip();
-        }
-        else if (xDifference > 0 && !isFacingRight)
-        {
-            Flip();
-        }
+        if (xDifference < 0 && isFacingRight) Flip();
+        else if (xDifference > 0 && !isFacingRight) Flip();
     }
 
     private void Flip()
@@ -105,7 +100,6 @@ public class BossMove : MonoBehaviour
         }
 
         anim.SetBool("Walk", true);
-
         float direction = (player.position.x > transform.position.x) ? 1 : -1;
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
     }
@@ -130,7 +124,6 @@ public class BossMove : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isDead) return;
-
         if (collision.CompareTag("Projectile"))
         {
             TakeDamage(1);
@@ -141,13 +134,10 @@ public class BossMove : MonoBehaviour
     public void TakeDamage(int damage)
     {
         if (isDead) return;
-
         currentHealth -= damage;
+        if (Hpbar != null) Hpbar.fillAmount = (float)currentHealth / maxHealth;
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        if (currentHealth <= 0) Die();
         else
         {
             anim.SetTrigger("Hurt");
@@ -159,25 +149,22 @@ public class BossMove : MonoBehaviour
     {
         isDead = true;
 
-        // Vypneme logiku pohybu v Animatoru
         anim.SetBool("Walk", false);
-
-        // Spustíme smrt
         anim.SetTrigger("Death");
 
-        // Zastavíme pohyb
         rb.linearVelocity = Vector2.zero;
-
-        // Ignorujeme gravitaci, aby nepropadl
         rb.bodyType = RigidbodyType2D.Kinematic;
-
-        // Vypneme kolizi
         GetComponent<Collider2D>().enabled = false;
 
-        // Vypneme skript
-        this.enabled = false;
+        // --- ZDE SE ZAPNE TEN VYPNUTÝ OBJEKT ---
+        if (objektPoSmrti != null)
+        {
+            objektPoSmrti.SetActive(true);
+        }
 
         if (finalPortal != null) finalPortal.SetActive(true);
+
+        this.enabled = false;
         Destroy(gameObject, 1f);
     }
 }
