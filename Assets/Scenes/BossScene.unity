@@ -521,7 +521,7 @@ Transform:
   m_GameObject: {fileID: 153579699}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 35.16, y: -16.81, z: -1}
+  m_LocalPosition: {x: 28.83, y: -17.09, z: -1}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2473,7 +2473,7 @@ GameObject:
   - component: {fileID: 517247902}
   - component: {fileID: 517247901}
   m_Layer: 0
-  m_Name: BAGIGANT
+  m_Name: Zyvops
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2663,8 +2663,8 @@ Transform:
   m_GameObject: {fileID: 517247900}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.47, y: -17.84, z: 0}
-  m_LocalScale: {x: -11, y: 11, z: 1}
+  m_LocalPosition: {x: 29.33, y: -18.59, z: 0}
+  m_LocalScale: {x: -9, y: 9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 241364897}
@@ -3306,7 +3306,7 @@ Transform:
   m_GameObject: {fileID: 624171278}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 35.23, y: -20.22, z: -1}
+  m_LocalPosition: {x: 28.9, y: -20.5, z: -1}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4663,7 +4663,7 @@ Transform:
   m_GameObject: {fileID: 1065276337}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 34.95, y: -13.19, z: -1}
+  m_LocalPosition: {x: 28.62, y: -13.47, z: -1}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5889,7 +5889,7 @@ Transform:
   m_GameObject: {fileID: 1206734061}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -33.739998, y: -12.920001, z: -1}
+  m_LocalPosition: {x: -24.679998, y: -13.2699995, z: -1}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7378,7 +7378,7 @@ Transform:
   m_GameObject: {fileID: 1542464453}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -33.53, y: -16.54, z: -1}
+  m_LocalPosition: {x: -24.47, y: -16.89, z: -1}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7537,7 +7537,7 @@ GameObject:
   - component: {fileID: 1605290422}
   - component: {fileID: 1605290424}
   m_Layer: 0
-  m_Name: Zyvops
+  m_Name: BAGISANT(zyvops)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7611,8 +7611,8 @@ Transform:
   m_GameObject: {fileID: 1605290418}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.47, y: -19.5, z: 0}
-  m_LocalScale: {x: -7, y: 7, z: 1}
+  m_LocalPosition: {x: 15.36, y: -19.82, z: 0}
+  m_LocalScale: {x: -6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1266182952}
@@ -8644,7 +8644,7 @@ Transform:
   m_GameObject: {fileID: 1803019249}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -33.46, y: -19.95, z: -1}
+  m_LocalPosition: {x: -24.4, y: -20.3, z: -1}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
