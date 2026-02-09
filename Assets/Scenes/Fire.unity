@@ -10864,7 +10864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a213dc151ef322d41932c9eb797a9980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UniversalMusicStart
-  startTime: 60
+  startTime: 0
 --- !u!82 &979616339
 AudioSource:
   m_ObjectHideFlags: 0
