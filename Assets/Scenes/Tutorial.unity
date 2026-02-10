@@ -1308,7 +1308,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -365.26, y: -217.44}
+  m_AnchoredPosition: {x: -363.76, y: -217.44}
   m_SizeDelta: {x: 12.4507, y: 4.2441}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &561240082
@@ -1333,8 +1333,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: In Earth world, you can climb on walls, by pressing D or A and W SIMULTANEOUSLY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
+  m_sharedMaterial: {fileID: -1157166874354938731, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2047,8 +2047,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Press A to go Left \nPress D to go Right\nPress W to Jump"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
+  m_sharedMaterial: {fileID: -1157166874354938731, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2579,7 +2579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -344.54605, y: -218.15}
+  m_AnchoredPosition: {x: -344.11, y: -218.15}
   m_SizeDelta: {x: 10.3598, y: 4.4499}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1233597760
@@ -2604,8 +2604,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: In Wind world, you can fly, by pressing W or Space REPEATEDLY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
+  m_sharedMaterial: {fileID: -1157166874354938731, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3162,7 +3162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a213dc151ef322d41932c9eb797a9980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startTime: 6
+  startTime: 2
 --- !u!82 &1751799120
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3174,7 +3174,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 3275d5152b3128340b7fe0bcc2a6b88e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4023,8 +4023,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jump in portal to get to next world, have FUN!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
+  m_sharedMaterial: {fileID: -1157166874354938731, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4191,8 +4191,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: When you see  Zyvops, you can attack him by left mouse key
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
+  m_sharedMaterial: {fileID: -1157166874354938731, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
