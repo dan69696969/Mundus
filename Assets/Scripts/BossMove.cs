@@ -19,11 +19,14 @@ public class BossMove : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private GameObject finalPortal;
 
-    // TADY JE TO DŮLEŽITÉ:
-    // Vytvoříme prázdné políčko v Inspektoru.
-    // Funguje to, i když je ten objekt ve hře vypnutý.
+    // --- ZDE PŘETÁHNEŠ DRUHÉHO BOSSE ---
     [Header("Objekt k aktivaci")]
-    [SerializeField] private GameObject objektPoSmrti;
+    [SerializeField] private GameObject objektPoSmrti; // Druhý boss (Bagisant)
+
+    // --- ZDE PŘETÁHNEŠ AUDIO ZDROJE ---
+    [Header("Nastavení Hudby")]
+    [SerializeField] private AudioSource hudbaLevelu;  // Reprák, co hraje teď
+    [SerializeField] private AudioSource hudbaPoSmrti; // Reprák, co se má zapnout
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -156,15 +159,33 @@ public class BossMove : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         GetComponent<Collider2D>().enabled = false;
 
-        // --- ZDE SE ZAPNE TEN VYPNUTÝ OBJEKT ---
+        // 1. Aktivace druhého bosse
         if (objektPoSmrti != null)
         {
             objektPoSmrti.SetActive(true);
         }
+        else
+        {
+            Debug.LogError("POZOR! Nemáš přiřazený Objekt Po Smrti (druhého bosse) v Inspektoru!");
+        }
 
+        // 2. Aktivace portálu
         if (finalPortal != null) finalPortal.SetActive(true);
 
+        // 3. Přepnutí hudby (Dva Audio Source objekty)
+        if (hudbaLevelu != null)
+        {
+            hudbaLevelu.Stop();
+        }
+
+        if (hudbaPoSmrti != null)
+        {
+            hudbaPoSmrti.Play();
+        }
+
         this.enabled = false;
+
+        // Zničí tento objekt po 1 vteřině (aby se stihla přehrát animace smrti)
         Destroy(gameObject, 1f);
     }
 }
