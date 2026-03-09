@@ -13,10 +13,15 @@ public class PlayerMovement : MonoBehaviour
     private const string WATER_SCENE_NAME = "Water";
     private const string TUTORIAL_SCENE_NAME = "Tutorial";
     private const string EARTH_SCENE_NAME = "Earth";
+    private const string FIRE_SCENE_NAME = "Fire";
 
     [Header("Gravity Settings")]
     [SerializeField] private float normalGravity = 7f;
     [SerializeField] private float waterGravity = 1.5f;
+
+    [Header("Zvuky")]
+    [SerializeField] private AudioClip jumpSound;
+    private AudioSource audioSource;
 
     private int maxJumps = 1;
     private int availableJumps;
@@ -35,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -54,6 +60,17 @@ public class PlayerMovement : MonoBehaviour
         bool isInWaterScene = sceneName == WATER_SCENE_NAME;
         bool isInTutorialScene = sceneName == TUTORIAL_SCENE_NAME;
         bool isInEarthScene = sceneName == EARTH_SCENE_NAME;
+        bool isInFireScene = sceneName == FIRE_SCENE_NAME;
+
+        // Návrat do PortalScene pomocí B
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (isInWindScene || isInWaterScene || isInEarthScene || isInFireScene)
+            {
+                SceneManager.LoadScene("PortalScene");
+                return;
+            }
+        }
 
         if (isGrounded())
             availableJumps = maxJumps;
@@ -72,32 +89,24 @@ public class PlayerMovement : MonoBehaviour
                 body.gravityScale = isInWaterScene ? waterGravity : normalGravity;
             }
 
-            bool isHoldingJump = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W);
             bool isPressingJump = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W);
 
-            // 1. Ve WIND scéně (Nekonečné lítání na DRŽENÍ)
-            if (isInWindScene && isHoldingJump)
+            if (isInWindScene && isPressingJump)
             {
                 Jump(true);
             }
-            // 2. V TUTORIALU (Lezení ODRAZY na DRŽENÍ + Nekonečný skok na KLIKNUTÍ)
             else if (isInTutorialScene)
             {
-                if (onWall() && !isGrounded() && isHoldingJump) Jump(false);
+                if (onWall() && !isGrounded() && isPressingJump) Jump(false);
                 if (isPressingJump) Jump(true);
             }
-            // 3. V EARTH (Jen lezení ODRAZY na DRŽENÍ, ale skok ve vzduchu je NORMÁLNÍ)
             else if (isInEarthScene)
             {
-                // Lezení odrazy při držení
-                if (onWall() && !isGrounded() && isHoldingJump)
+                if (onWall() && !isGrounded() && isPressingJump)
                     Jump(false);
-
-                // Klasický skok (nebude nekonečný)
                 else if (isPressingJump)
                     Jump(false);
             }
-            // 4. OSTATNÍ SVĚTY
             else if (isPressingJump)
             {
                 Jump(false);
@@ -111,18 +120,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded())
         {
+            if (jumpSound != null) audioSource.PlayOneShot(jumpSound);
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpPower);
             anim.SetTrigger("jump");
             availableJumps--;
         }
         else if (allowInfiniteJump)
         {
+            if (jumpSound != null) audioSource.PlayOneShot(jumpSound);
             body.linearVelocity = new Vector2(body.linearVelocity.x, 0);
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpPower);
             anim.SetTrigger("jump");
         }
         else if (onWall() && !isGrounded())
         {
+            if (jumpSound != null) audioSource.PlayOneShot(jumpSound);
             if (horizontalInput == 0)
             {
                 body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
