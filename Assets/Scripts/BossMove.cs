@@ -11,6 +11,7 @@ public class BossMove : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private int maxHealth = 5;
+    [SerializeField] private float damageToPlayer = 1f; // Nastav v Inspektoru pro každého bosse
 
     [Header("Nastavení Otáčení")]
     [SerializeField] private float flipThreshold = 0.5f;
@@ -19,14 +20,19 @@ public class BossMove : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private GameObject finalPortal;
 
-    // --- ZDE PŘETÁHNEŠ DRUHÉHO BOSSE ---
     [Header("Objekt k aktivaci")]
-    [SerializeField] private GameObject objektPoSmrti; // Druhý boss (Bagisant)
+    [SerializeField] private GameObject objektPoSmrti;
 
-    // --- ZDE PŘETÁHNEŠ AUDIO ZDROJE ---
     [Header("Nastavení Hudby")]
-    [SerializeField] private AudioSource hudbaLevelu;  // Reprák, co hraje teď
-    [SerializeField] private AudioSource hudbaPoSmrti; // Reprák, co se má zapnout
+    [SerializeField] private AudioSource hudbaLevelu;
+    [SerializeField] private AudioSource hudbaPoSmrti;
+
+    [Header("Zvuky")]
+    [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private float attackSoundDelay = 0.1f;
+    private AudioSource audioSource;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -34,6 +40,7 @@ public class BossMove : MonoBehaviour
     private float lastAttackTime;
     private int currentHealth;
     private bool isFacingRight = true;
+    private bool hasDealtDamageThisAttack = false;
 
     [SerializeField] Image Hpbar;
 
@@ -41,6 +48,7 @@ public class BossMove : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         currentHealth = maxHealth;
 
         if (Hpbar != null) Hpbar.fillAmount = (float)currentHealth / maxHealth;
@@ -66,6 +74,7 @@ public class BossMove : MonoBehaviour
         if (distanceToPlayer > attackRange)
         {
             ChasePlayer();
+            hasDealtDamageThisAttack = false;
         }
         else
         {
@@ -75,6 +84,24 @@ public class BossMove : MonoBehaviour
                 Attack();
             }
         }
+
+        // Zranění hráče během útoku
+        if (IsPlayingAnimation("AttackBoss") && !hasDealtDamageThisAttack)
+        {
+            float distToPlayer = Vector2.Distance(transform.position, player.position);
+            if (distToPlayer <= attackRange)
+            {
+                Health playerHealth = player.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damageToPlayer);
+                    hasDealtDamageThisAttack = true;
+                }
+            }
+        }
+
+        if (!IsPlayingAnimation("AttackBoss"))
+            hasDealtDamageThisAttack = false;
     }
 
     private void HandleFlip()
@@ -117,6 +144,14 @@ public class BossMove : MonoBehaviour
     {
         lastAttackTime = Time.time;
         anim.SetTrigger("Attack");
+        StartCoroutine(PlayAttackSoundDelayed());
+    }
+
+    private IEnumerator PlayAttackSoundDelayed()
+    {
+        yield return new WaitForSeconds(attackSoundDelay);
+        if (attackSound != null && audioSource != null)
+            audioSource.PlayOneShot(attackSound);
     }
 
     private bool IsPlayingAnimation(string stateName)
@@ -129,6 +164,8 @@ public class BossMove : MonoBehaviour
         if (isDead) return;
         if (collision.CompareTag("Projectile"))
         {
+            if (hitSound != null && audioSource != null)
+                audioSource.PlayOneShot(hitSound);
             TakeDamage(1);
             Destroy(collision.gameObject);
         }
@@ -159,33 +196,20 @@ public class BossMove : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         GetComponent<Collider2D>().enabled = false;
 
-        // 1. Aktivace druhého bosse
-        if (objektPoSmrti != null)
-        {
-            objektPoSmrti.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("POZOR! Nemáš přiřazený Objekt Po Smrti (druhého bosse) v Inspektoru!");
-        }
+        if (deathSound != null && audioSource != null)
+            audioSource.PlayOneShot(deathSound);
 
-        // 2. Aktivace portálu
+        if (objektPoSmrti != null)
+            objektPoSmrti.SetActive(true);
+        else
+            Debug.LogError("POZOR! Nemáš přiřazený Objekt Po Smrti (druhého bosse) v Inspektoru!");
+
         if (finalPortal != null) finalPortal.SetActive(true);
 
-        // 3. Přepnutí hudby (Dva Audio Source objekty)
-        if (hudbaLevelu != null)
-        {
-            hudbaLevelu.Stop();
-        }
-
-        if (hudbaPoSmrti != null)
-        {
-            hudbaPoSmrti.Play();
-        }
+        if (hudbaLevelu != null) hudbaLevelu.Stop();
+        if (hudbaPoSmrti != null) hudbaPoSmrti.Play();
 
         this.enabled = false;
-
-        // Zničí tento objekt po 1 vteřině (aby se stihla přehrát animace smrti)
         Destroy(gameObject, 1f);
     }
 }

@@ -43,6 +43,12 @@ public class PlayerMovement : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Start()
+    {
+        anim.Play("Idle", 0, 0f);
+        body.linearVelocity = Vector2.zero;
+    }
+
     private void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
@@ -61,6 +67,13 @@ public class PlayerMovement : MonoBehaviour
         bool isInTutorialScene = sceneName == TUTORIAL_SCENE_NAME;
         bool isInEarthScene = sceneName == EARTH_SCENE_NAME;
         bool isInFireScene = sceneName == FIRE_SCENE_NAME;
+
+        // Návrat do Menu pomocí M
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SceneManager.LoadScene("Menu");
+            return;
+        }
 
         // Návrat do PortalScene pomocí B
         if (Input.GetKeyDown(KeyCode.B))
@@ -90,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             bool isPressingJump = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W);
+            bool isTouchingWall = onWall();
 
             if (isInWindScene && isPressingJump)
             {
@@ -97,12 +111,14 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (isInTutorialScene)
             {
-                if (onWall() && !isGrounded() && isPressingJump) Jump(false);
-                if (isPressingJump) Jump(true);
+                if (isTouchingWall && !isGrounded() && isPressingJump)
+                    Jump(false);
+                else if (isPressingJump)
+                    Jump(true);
             }
             else if (isInEarthScene)
             {
-                if (onWall() && !isGrounded() && isPressingJump)
+                if (isTouchingWall && !isGrounded() && isPressingJump)
                     Jump(false);
                 else if (isPressingJump)
                     Jump(false);
@@ -125,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetTrigger("jump");
             availableJumps--;
         }
-        else if (allowInfiniteJump)
+        else if (allowInfiniteJump && !onWall())
         {
             if (jumpSound != null) audioSource.PlayOneShot(jumpSound);
             body.linearVelocity = new Vector2(body.linearVelocity.x, 0);

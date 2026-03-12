@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteAlways] 
+[ExecuteAlways]
 public class HealthBar : MonoBehaviour
 {
     private Health playerHealth;
@@ -18,10 +18,8 @@ public class HealthBar : MonoBehaviour
     {
         if (playerHealth != null && currenthealthBar != null)
         {
-            
-            currenthealthBar.fillAmount = playerHealth.currentHealth / 10f;
+            currenthealthBar.fillAmount = playerHealth.currentHealth / playerHealth.startingHealth;
 
-         
             if (!Application.isPlaying) UpdateVisualScale();
         }
     }
@@ -30,7 +28,7 @@ public class HealthBar : MonoBehaviour
     {
         if (playerHealth != null && totalhealthBar != null)
         {
-            totalhealthBar.fillAmount = playerHealth.startingHealth / 10f;
+            totalhealthBar.fillAmount = 1f;
         }
     }
 }

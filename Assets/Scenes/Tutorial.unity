@@ -3291,8 +3291,8 @@ Transform:
   m_GameObject: {fileID: 455313975}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -64.0581, y: -76.1666, z: 0}
-  m_LocalScale: {x: 1.1372207, y: -7.8559985, z: -3.0699675}
+  m_LocalPosition: {x: -63.7617, y: -76.1666, z: 0}
+  m_LocalScale: {x: 1.7300361, y: -7.8559985, z: -3.0699675}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1851175400}
@@ -4325,8 +4325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -363.76, y: -217.44}
-  m_SizeDelta: {x: 12.4507, y: 4.2441}
+  m_AnchoredPosition: {x: -361.99, y: -217.44}
+  m_SizeDelta: {x: 9.4272, y: 4.2441}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &561240082
 MonoBehaviour:
@@ -4348,7 +4348,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: In Earth world, you can climb on walls, by pressing D or A and W SIMULTANEOUSLY
+  m_text: In Earth world, you can climb on walls, by pressing D or A and repeatedly
+    press W or Space
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
   m_sharedMaterial: {fileID: -1157166874354938731, guid: 0a758da9fdf04694dad7ccce3345f4a4, type: 2}
@@ -4375,8 +4376,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.94
-  m_fontSizeBase: 0.94
+  m_fontSize: 0.74
+  m_fontSizeBase: 0.74
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10887,8 +10888,8 @@ Transform:
   m_GameObject: {fileID: 1761177339}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60.3, y: -74.94, z: 0}
-  m_LocalScale: {x: 1.1372207, y: -7.8559985, z: -3.0699675}
+  m_LocalPosition: {x: -60.1196, y: -74.94, z: 0}
+  m_LocalScale: {x: 1.4980608, y: -7.8559985, z: -3.0699675}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1851175400}
